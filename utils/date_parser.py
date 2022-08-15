@@ -1,4 +1,4 @@
-class Parser(object):
+class DateParser(object):
 
     @staticmethod
     def lex(line):

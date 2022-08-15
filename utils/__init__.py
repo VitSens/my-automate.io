@@ -1,1 +1,1 @@
-from utils.date_parser import Parser
+from utils.date_parser import DateParser
