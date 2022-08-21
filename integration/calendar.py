@@ -2,14 +2,20 @@ import datetime
 import os
 from datetime import datetime as dt
 
+from dotenv import load_dotenv
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
+from sqlalchemy.exc import IntegrityError
 
+from db import session
+from db.model import Task
 from utils import DateParser
+
+load_dotenv()
 
 
 class GoogleCalendar:
-    __calendarId = os.getenv('CALENDAR_ID')
+    __calendarId = os.getenv("CALENDAR_ID")
 
     def __init__(self, creds):
         self.__creds = creds
@@ -26,6 +32,15 @@ class GoogleCalendar:
         new_events = []
 
         for event in events:
+            try:
+                time = event.due.datetime if event.due.datetime is not None else event.due.date
+                e = Task(task_id=event.id, title=event.content, description=event.description, date=time)
+                session.add(e)
+                session.commit()
+            except IntegrityError as e:
+                session.rollback()
+                continue
+
             new_events.append(self.__transformToCalendarEventWithoutTimestamp(event))
 
         for event in new_events:
