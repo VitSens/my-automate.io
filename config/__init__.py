@@ -1,1 +1,1 @@
-from .security import getToken
+from config.security import getToken

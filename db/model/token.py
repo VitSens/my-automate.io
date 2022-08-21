@@ -1,6 +1,6 @@
 from sqlalchemy import Column, JSON, String
 
-from db.db import base
+from db import base
 
 
 class Token(base):

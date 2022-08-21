@@ -1,9 +1,5 @@
-from dotenv import load_dotenv
-
 from config import getToken
 from integration import GoogleCalendar, Todoist
-
-load_dotenv()
 
 calendar = GoogleCalendar(getToken())
 
